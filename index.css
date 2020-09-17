@@ -16,3 +16,27 @@ body{
     color: blue;
 
 }
+
+.contain-matrix{
+width:800px;
+height:800px;
+
+margin: auto;
+display:grid;
+grid-template-columns: auto auto auto auto auto auto auto;
+/* background: blue; */
+padding:10px;
+text-align: center;
+/* transition: 2s;
+transform: rotate(90deg); */
+
+}
+.square{
+margin: 10px;
+background: #33FFBE;
+border: 1px solid green;
+padding:auto;
+width:80px;
+height:80px;
+
+}
