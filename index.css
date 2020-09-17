@@ -1,0 +1,18 @@
+body{
+  /*   background: url("https://images.alphacoders.com/985/985562.jpg"); */
+
+    background-size: cover;
+    background-repeat: no-repeat;
+    width:100%;
+    height:100vh;
+}
+
+#text-score{
+    color: red;
+    font-size: xx-large
+}
+
+#score{
+    color: blue;
+
+}
