@@ -17,16 +17,42 @@
   crossorigin="anonymous"></script>
     <script>
         $(document).ready(function(){
-            alert("Oliver")
+            // alert("connect")
+            var score = 0;
+            var rightAnswer = true
+            var randomLoading
+            var RandomArray = []
+            // create 49 matrix
+            for(let i = 1;i<=49;i++){
+              createOneSquare(i)
+            }
+
+            // Random choose 6 titlefor User
+            for(let j = 1;j<=12;j++){
+              test = Math.floor((Math.random() * 49) + 1)
+              RandomArray.push(test)
+            }
+            console.log("random Array",RandomArray)
+// change color random each turn
+            RandomArray.map(id => {
+            console.log("element: ",id)
+            return changeColorOneSquare(id)})
         })
 
     //  function->DOM  -> 49 div
-        var createDiv = () => {
+        var createOneSquare = (id) => {
             let oneDiv =document.createElement("div")
-
-
-
+            oneDiv.id= id
+            oneDiv.classList.add("square")
+            oneDiv.onclick = () => {alert("square"+id)}
+            document.getElementById("contain-matrix").appendChild(oneDiv)
         }
+    // change Color square
+        var changeColorOneSquare = (id) => {
+                let oneSquare =  document.getElementById(id)
+                oneSquare.style.background = "#665500";
+                console.log("change color: ",id)
+           }
     //  add class and id
     // add randow color
     </script>
@@ -64,57 +90,8 @@
                   <button type="button" class="btn btn-warning"> Terminal</button>
             </div>
       <!--       // matrix -->
-            <div class="container matrix">
-                  <div class="contain-matrix">
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
+            <div class="container matrix" >
+                  <div class="contain-matrix" id="contain-matrix">
 
                   </div>
             </div>
