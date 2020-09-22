@@ -4,57 +4,150 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+<!-- ==========================================================BootStrap============================================
+====================================================================================================== -->
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
    <link rel="stylesheet" type="text/css" href="index.css"></link>
     <title>Lumosity Game</title>
     <!--  loading page -> create matrix -> window.load -->
+
+<!-- ===================================================JQuery===================================================
+====================================================================================================== -->
     <script
   src="https://code.jquery.com/jquery-3.5.1.js"
   integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
   crossorigin="anonymous"></script>
-    <script>
+<!-- ======================================================================================================
+====================================================================================================== -->
+<!-- use underscore.js -->
+<script src="https://cdn.jsdelivr.net/npm/underscore@1.11.0/underscore-min.js">
+</script>
+<!-- ======================================================================================================
+====================================================================================================== -->
+<script>
+// =================================================== Browser loaded ==================================
         $(document).ready(function(){
             // alert("connect")
-            var score = 0;
+           score = 0;
             var rightAnswer = true
             var randomLoading
-            var RandomArray = []
-            // create 49 matrix
-            for(let i = 1;i<=49;i++){
-              createOneSquare(i)
-            }
+            RandomArray = []
 
-            // Random choose 6 titlefor User
+            // Random choose 12 squares for User
             for(let j = 1;j<=12;j++){
               test = Math.floor((Math.random() * 49) + 1)
               RandomArray.push(test)
             }
+            // filter -> unique element
+            RandomArray =_.uniq(RandomArray);
+
+            // create 49 matrix
+            // for(let i = 1;i<=49;i++){
+            //   createOneSquare(i)
+            // }
+            createMatrix()
+
+
             console.log("random Array",RandomArray)
-// change color random each turn
-            RandomArray.map(id => {
-            console.log("element: ",id)
-            return changeColorOneSquare(id)})
+          // change color random each turn
+            // RandomArray.map(id => {
+            // return changeColorOneSquare(id)})
+            // loading score
+            document.getElementById("score").textContent =score
         })
 
+
+// =========================================================================================================
+// ===================================================== HELPFUL FUNCTION ====================================================
     //  function->DOM  -> 49 div
         var createOneSquare = (id) => {
             let oneDiv =document.createElement("div")
             oneDiv.id= id
             oneDiv.classList.add("square")
-            oneDiv.onclick = () => {alert("square"+id)}
+            oneDiv.onclick = () => {
+              // check square click is right value in RandomArray
+              var exitLoop = false
+              RandomArray.forEach(index => {
+                if(index == id){
+                  // score + 1
+                  score+= 1
+                  document.getElementById("score").textContent =score
+                  console.log("score: ",score)
+                  // show color user -> right
+                  document.getElementById(id).style.background = "#fd823e";
+                  //  + 1 score
+                  exitLoop = true
+                  console.log("RIGHT square clicked")
+                }
+              })
+
+              // remove this square out RandomArray
+              RandomArray = RandomArray.filter(squareId => {
+                  return squareId !== id})
+
+              // check to exit onClick when choose right square
+              if(exitLoop){
+                return
+              }
+              score-= 1
+              console.log("score: ",score)
+              document.getElementById(id).style.background = "red";
+              document.getElementById("score").textContent =score
+              return console.log("WRONG square clicked")
+
+            }
             document.getElementById("contain-matrix").appendChild(oneDiv)
         }
     // change Color square
-        var changeColorOneSquare = (id) => {
+        var changeColorOneSquare = (id,color) => {
                 let oneSquare =  document.getElementById(id)
-                oneSquare.style.background = "#665500";
-                console.log("change color: ",id)
+                oneSquare.style.background = color;
+                oneSquare.style.transition = "all 2s"
+
            }
-    //  add class and id
-    // add randow color
+
+    //  hide green color
+    // show green color
+        var show = () => {
+          RandomArray.map(id => {
+            return changeColorOneSquare(id,"#fd823e")})
+            // after 3 seconds -> hide
+            setTimeout(hide,3000);
+            setTimeout(rotate,2000);
+            console.log("show() trigger -> rotate() + hide() trigger")
+        }
+
+        // create matrix -> 49 square
+        var createMatrix=()=>{
+            // create 49 matrix
+            for(let i = 1;i<=49;i++){
+              createOneSquare(i)
+            }
+            console.log("create 49 squares trigger")
+
+        }
+
+        // hide correct square
+        var hide = () => {
+          for(let i = 1;i<=49; i++){
+              changeColorOneSquare(i,"#33FFBE")
+          }
+
+          console.log("hide() trigger")
+        }
+        // need Rotate
+        var rotate = () => {
+
+          document.getElementById("contain-matrix").style.transform ="rotate(90deg)"
+          document.getElementById("contain-matrix").style.transition = "all 2s"
+        }
+
+        // one round:
+        var oneRound = () => {
+          show();
+        }
     </script>
   </head>
   <body>
@@ -85,8 +178,8 @@
     <!--   <div class="col"> -->
            <!--  button start and end game -->
             <div class="d-flex justify-content-between button">
-                  <button type="button" class="btn btn-success">Start</button>
-                  <p id="text-score">Score:<span id="score">40</span></p>
+                  <button type="button" class="btn btn-success" onclick="show()">Start</button>
+                  <p id="text-score">Score:<span id="score">0</span></p>
                   <button type="button" class="btn btn-warning"> Terminal</button>
             </div>
       <!--       // matrix -->
