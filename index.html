@@ -30,31 +30,28 @@
 // =================================================== Browser loaded ==================================
         $(document).ready(function(){
             // alert("connect")
-           score = 0;
-            var rightAnswer = true
-            var randomLoading
+            score = 0;
+            degree = 0
+
             RandomArray = []
 
+            lengthMatrix =3
             // Random choose 12 squares for User
-            for(let j = 1;j<=12;j++){
-              test = Math.floor((Math.random() * 49) + 1)
+            for(let j = 1;j<=lengthMatrix;j++){
+              test = Math.floor((Math.random() * Math.pow(lengthMatrix,2)) + 1)
               RandomArray.push(test)
             }
             // filter -> unique element
             RandomArray =_.uniq(RandomArray);
 
-            // create 49 matrix
-            // for(let i = 1;i<=49;i++){
-            //   createOneSquare(i)
-            // }
-            createMatrix()
+            // create custom matrix
+
+            createMatrix(lengthMatrix)
 
 
             console.log("random Array",RandomArray)
           // change color random each turn
-            // RandomArray.map(id => {
-            // return changeColorOneSquare(id)})
-            // loading score
+
             document.getElementById("score").textContent =score
         })
 
@@ -62,23 +59,25 @@
 // =========================================================================================================
 // ===================================================== HELPFUL FUNCTION ====================================================
     //  function->DOM  -> 49 div
-        var createOneSquare = (id) => {
+    function createOneSquare  (id) {
             let oneDiv =document.createElement("div")
             oneDiv.id= id
             oneDiv.classList.add("square")
             oneDiv.onclick = () => {
               // check square click is right value in RandomArray
-              var exitLoop = false
+              let exitLoop = false
               RandomArray.forEach(index => {
                 if(index == id){
                   // score + 1
                   score+= 1
                   document.getElementById("score").textContent =score
-                  console.log("score: ",score)
+
                   // show color user -> right
-                  document.getElementById(id).style.background = "#fd823e";
+                  document.getElementById(id).style.background = "#085b8d";
                   //  + 1 score
                   exitLoop = true
+                  // check score
+                  checkScore()
                   console.log("RIGHT square clicked")
                 }
               })
@@ -86,7 +85,17 @@
               // remove this square out RandomArray
               RandomArray = RandomArray.filter(squareId => {
                   return squareId !== id})
-
+              // check if user successfull choose all square
+              if (RandomArray.length == 0){
+                console.log("destroy start")
+                  //destroy current matrix
+                    removeAllSquare()
+                  // increase size matrix
+                  lengthMatrix +=1
+                  console.log("new matrix length is created: ",lengthMatrix)
+                  // call upper new level
+                  UpgradeNewLevel()
+              }
               // check to exit onClick when choose right square
               if(exitLoop){
                 return
@@ -95,13 +104,19 @@
               console.log("score: ",score)
               document.getElementById(id).style.background = "red";
               document.getElementById("score").textContent =score
+              // check score
+              checkScore()
               return console.log("WRONG square clicked")
 
             }
+
+
+
             document.getElementById("contain-matrix").appendChild(oneDiv)
         }
     // change Color square
-        var changeColorOneSquare = (id,color) => {
+    function changeColorOneSquare (id,color){
+                console.log("change color square: ", id)
                 let oneSquare =  document.getElementById(id)
                 oneSquare.style.background = color;
                 oneSquare.style.transition = "all 2s"
@@ -110,43 +125,92 @@
 
     //  hide green color
     // show green color
-        var show = () => {
+        function show () {
           RandomArray.map(id => {
-            return changeColorOneSquare(id,"#fd823e")})
+
+            return changeColorOneSquare(id,"#085b8d")})
             // after 3 seconds -> hide
             setTimeout(hide,3000);
             setTimeout(rotate,2000);
-            console.log("show() trigger -> rotate() + hide() trigger")
+            console.log("show() called -> rotate() + hide() called")
         }
 
         // create matrix -> 49 square
-        var createMatrix=()=>{
+        function createMatrix(length){
+         // set matrix size ->
+            document.getElementById("contain-matrix").style.gridTemplateColumns = `repeat(${length}, 1fr)`
             // create 49 matrix
-            for(let i = 1;i<=49;i++){
+            for(let i = 1;i<=Math.pow(length, 2);i++){
               createOneSquare(i)
             }
-            console.log("create 49 squares trigger")
+            console.log(`Matrix is created in ${Math.pow(length, 2)} squares `)
 
         }
 
         // hide correct square
-        var hide = () => {
-          for(let i = 1;i<=49; i++){
+        function hide (){
+          for(let i = 1;i<=Math.pow(lengthMatrix,2); i++){
               changeColorOneSquare(i,"#33FFBE")
           }
 
           console.log("hide() trigger")
         }
         // need Rotate
-        var rotate = () => {
+        function rotate (){
+          degree += 90
 
-          document.getElementById("contain-matrix").style.transform ="rotate(90deg)"
+          document.getElementById("contain-matrix").style.transform ="rotate("+degree+"deg)"
           document.getElementById("contain-matrix").style.transition = "all 2s"
+
+
         }
 
         // one round:
-        var oneRound = () => {
-          show();
+        function UpgradeNewLevel(){
+          createMatrix(lengthMatrix)
+        }
+
+        // check score
+        function checkScore(){
+          if (score <= 0){
+            // show modal -> user cannot play any more
+            resetScore()
+            $('#scoreModal').modal("show")
+            console.log("modal show")
+
+          }
+        }
+
+        // var terminal
+        function terminalButtonClicked(){
+          $('#terminateModal').modal("show")
+          console.log("modal show")
+
+            }
+
+
+        // reset score
+        function resetScore(){
+          score = 0
+          document.getElementById("score").textContent = score
+          console.log("resetScore() trigger")
+        }
+
+        // exit modal
+        function exitModal(id){
+          $(`#${id}`).modal("hide")
+          console.log("exit modal trigger")
+          resetScore()
+        }
+
+        function removeAllSquare(){
+              console.log("remove called()")
+              for(let i = 1; i<= Math.pow(lengthMatrix);i++){
+                let square = document.getElementById(i);
+                square.parentNode.removeChild(element);
+                console.log('Oliver removed square:', i);
+              }
+
         }
     </script>
   </head>
@@ -174,13 +238,57 @@
     </ul>
   </div>
 </nav>
+<!-- ========================================= Game over ======================================== -->
+<div class="modal"  id="scoreModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Sorry player :(</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Game is over</p>
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ================================================================================= -->
+<!-- ========================================= Terminal ======================================== -->
+<div class="modal"  id="terminateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Hello player :)</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure that you want to terminate game</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="exitModal('terminateModal')">I sure do</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ================================================================================= -->
     <div class="container">
     <!--   <div class="col"> -->
            <!--  button start and end game -->
             <div class="d-flex justify-content-between button">
                   <button type="button" class="btn btn-success" onclick="show()">Start</button>
+                  <button type="button" class="btn btn-primary"> Restart</button>
                   <p id="text-score">Score:<span id="score">0</span></p>
-                  <button type="button" class="btn btn-warning"> Terminal</button>
+
+                  <button type="button" class="btn btn-warning" onclick="terminalButtonClicked()"> Terminal</button>
             </div>
       <!--       // matrix -->
             <div class="container matrix" >
@@ -194,7 +302,7 @@
     </div>
 
 
-<script src="index.js">
+<!-- <script src="index.js"> -->
 
 </script>
 

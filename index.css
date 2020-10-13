@@ -23,7 +23,7 @@ height:800px;
 
 margin: auto;
 display:grid;
-grid-template-columns: auto auto auto auto auto auto auto;
+/* grid-template-columns: repeat(5, 1fr); */
 /* background: blue; */
 padding:10px;
 text-align: center;
