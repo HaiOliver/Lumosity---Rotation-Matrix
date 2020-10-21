@@ -65,12 +65,12 @@ border: 3px solid black;
 
         }
         .square{
-        margin: 5px;
+        margin: 3px;
         background: #33FFBE;
         border: 1px solid green;
         padding:auto;
-        width:40px;
-        height:40px;
+        width:30px;
+        height:30px;
 
         }
 
