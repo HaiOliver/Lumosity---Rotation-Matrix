@@ -9,3 +9,5 @@ score INT NOT NULL
 );
 
 drop table users;
+
+select * from users;

@@ -8,12 +8,6 @@ const User = require("./users")
 var cors=require('cors');
 
 
-// // parse requests of content-type: application/json
-// app.use(bodyParser.json());
-
-// // parse requests of content-type: application/x-www-form-urlencoded
-// app.use(bodyParser.urlencoded({ extended: true }));
-
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))
 
@@ -48,15 +42,13 @@ app.post("/user", (req,res)=>{
               message: "Content can not be empty!"
             });
           }
-
+        console.log("====================== body post request: ", req.body)
           // Create a Customer
           const user = new User({
             name: req.body.name,
             score: req.body.score
           });
 
-      console.log("=========================req: ",req)
-      console.log("=========================score: ",req.body.score)
           // Save Customer in the database
           User.create(user, (err, data) => {
             if (err)
@@ -64,7 +56,7 @@ app.post("/user", (req,res)=>{
                 message:
                   err.message || "line 23,controller.js, Some error occurred while creating the Customer."
               });
-            else res.send("inserted successfully: ",data);
+            else res.send(data);
           });
 
 

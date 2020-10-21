@@ -27,22 +27,90 @@
 <!-- ======================================================================================================
 ====================================================================================================== -->
 <script>
+// load window:
+$(document).ready(function(){
+  let user = []
+  fetchUserInDB()
+  .then(result => user = result)
+  .then(()=>
+  {// call render
+
+console.log("users must be array: ", user)
+    render(user)}
+    )
+  })
+
+
+
+const fetchUserInDB = async () => {
+  try {
+    const response = await fetch('http://localhost:3000/users')
+    return await response.json()
+  }catch(err){
+    console.log("line 43, learderboard: ", err)
+  }
+
+
+}
+
+
+const render = (users) => {
+    users.map(user => {
+      appendName(user.name)
+      appendScore(user.score)
+    })
+
+    console.log("render() called")
+
+}
+
+const appendName = (name) => {
+  // create table
+  let user = document.createElement("li")
+  let text =document.createTextNode(name)
+  user.appendChild(text)
+  document.getElementById("users").append(user)
+  console.log("appendName() called")
+}
+
+const appendScore = (score) => {
+  // create table
+  let user = document.createElement("li")
+  let text =document.createTextNode(score)
+  user.appendChild(text)
+  document.getElementById("score").append(user)
+  console.log("appendScore() called")
+}
 
 </script>
   </head>
   <body>
 
     <div class="container">
-      <div class=" row justify-content-md-center">
-    <h3>User Raking</h3>
+      <div class=" row d-flex justify-content-center">
+      <h3>User Ranking</h3>
       </div>
-      <div class=" row justify-content-md-center">
+      <div class=" row d-flex justify-content-center">
         <div class="col">
           <h3>User:</h3>
+
+          <ul id="users">
+
+          </ul>
+
         </div>
         <div class="col">
             <h3>Score:</h3>
+
+            <div id="score">
+            </div>
         </div>
+      </div>
+      <div class="row ">
+        <div class="col col-sm-12 d-flex justify-content-center">
+          <a href="index.html" class="btn btn-success">Play Game again</a>
+        </div>
+
       </div>
 
 
