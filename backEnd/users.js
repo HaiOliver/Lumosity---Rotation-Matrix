@@ -16,7 +16,7 @@ User.create = (newUser, result) => {
           return;
         }
 
-        console.log("Line 18, user.js, created user in Db: ", { id: res.insertId, ...newUser });
+        console.log("++++++++++++++++++++++++++++++++++++++++++++Line 12, user.js, created user in Db: ", { id: res.insertId, ...newUser });
         result(null, { id: res.insertId, ...newUser });
       });
     };
@@ -24,7 +24,8 @@ User.create = (newUser, result) => {
 
 // Get all user in top 5
 User.getAll = result => {
-      sql.query("SELECT * FROM users ORDER BY score DESC LIMIT 5", (err, res) => {
+      console.log("========================================= Get users from DB =============================")
+      sql.query("SELECT * FROM users ORDER BY score DESC", (err, res) => {
         if (err) {
           console.log("error ib user,js, line 28,error: ", err);
           result(null, err);

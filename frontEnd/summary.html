@@ -26,62 +26,7 @@
 </script>
 <!-- ======================================================================================================
 ====================================================================================================== -->
-<script>
-   $(document).ready(function(){
-        console.log("score test:",localStorage.getItem("score"));
-        showScore();
-
-   })
-
-// restart button
-  const restart = ()=>{
-    window.location.href = "./index.html";
-  }
-
-
-// submit button
-  const submit = () => {
-
-    // grab value
-    let validate = document.getElementById('name').validity.valid
-    if(!validate){
-      alert("Username cannot empty !!!")
-
-    }else{
-      let username = document.getElementById("name").value
-    let getScore = document.getElementById("score").value
-    // post for fetch request
-
-
-    const data = { name: username, score: getScore };
-    console.log("test test: ", data)
-    fetch('http://localhost:3000/user', {
-      method: 'POST', // or 'PUT'
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Success:', data);
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
-    console.log("test test")
-    // redirect page
-    window.location.href = "./leaderboard.html";
-  }
-    }
-
-
-    const showScore = ()=> {
-        // grab value from index.html
-        document.getElementById("score").innerHTML = localStorage.getItem("score")
-        // assign value
-        document.getElementById("score").value= localStorage.getItem("score")
-    }
+<script src='./js/summary.js'>
 
 </script>
   </head>
@@ -108,6 +53,10 @@
                 <!-- </form> -->
 
             </div>
+            <div id="loading"class="row d-flex justify-content-center">
+
+
+            </div>
 
 
 
@@ -116,8 +65,6 @@
     </div>
 
 
-
-<!-- <script src="index.js"> -->
 
 </script>
 

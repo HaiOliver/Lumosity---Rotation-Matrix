@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
    <link rel="stylesheet" type="text/css" href="./css/index.css"></link>
+   <link rel="stylesheet" type="text/css" href="./css/leaderboard.css"></link>
     <title>LeadingBoard</title>
     <!--  loading page -> create matrix -> window.load -->
 
@@ -26,61 +27,7 @@
 </script>
 <!-- ======================================================================================================
 ====================================================================================================== -->
-<script>
-// load window:
-$(document).ready(function(){
-  let user = []
-  fetchUserInDB()
-  .then(result => user = result)
-  .then(()=>
-  {// call render
-
-console.log("users must be array: ", user)
-    render(user)}
-    )
-  })
-
-
-
-const fetchUserInDB = async () => {
-  try {
-    const response = await fetch('http://localhost:3000/users')
-    return await response.json()
-  }catch(err){
-    console.log("line 43, learderboard: ", err)
-  }
-
-
-}
-
-
-const render = (users) => {
-    users.map(user => {
-      appendName(user.name)
-      appendScore(user.score)
-    })
-
-    console.log("render() called")
-
-}
-
-const appendName = (name) => {
-  // create table
-  let user = document.createElement("li")
-  let text =document.createTextNode(name)
-  user.appendChild(text)
-  document.getElementById("users").append(user)
-  console.log("appendName() called")
-}
-
-const appendScore = (score) => {
-  // create table
-  let user = document.createElement("li")
-  let text =document.createTextNode(score)
-  user.appendChild(text)
-  document.getElementById("score").append(user)
-  console.log("appendScore() called")
-}
+<script src="./js//leaderboard.js">
 
 </script>
   </head>
@@ -88,7 +35,24 @@ const appendScore = (score) => {
 
     <div class="container">
       <div class=" row d-flex justify-content-center">
-      <h3>User Ranking</h3>
+          <h5>Current User is :<span id="currentUser"></span></h5>
+
+      </div>
+      <div class=" row d-flex justify-content-center">
+
+        <h5> Score:<span id="currentScore"></span></h5>
+
+    </div>
+    <div class=" row d-flex justify-content-center">
+
+
+
+      <h5>  Ranking:<span id="rank"></span></h5>
+  </div>
+      <div class=" row d-flex justify-content-center">
+
+
+          <h2>Top best 5 players</h3>
       </div>
       <div class=" row d-flex justify-content-center">
         <div class="col">
@@ -113,8 +77,6 @@ const appendScore = (score) => {
 
       </div>
 
-
-<!-- <script src="index.js"> -->
 
 </script>
 

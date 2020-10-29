@@ -48,6 +48,19 @@ border: 3px solid black;
 
 }
 
+#start{
+
+    color: red;
+    font-size: 30px;
+
+}
+
+
+#cheat{
+    color:red;
+    font-size: 30px;
+}
+
 
 /* reponsive mobile ================================= */
 @media only screen and (max-width: 600px) {

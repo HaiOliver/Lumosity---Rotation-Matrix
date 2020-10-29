@@ -3,9 +3,9 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-const User = require("./users")
+const User = require("./users.js")
 
-var cors=require('cors');
+const cors=require('cors');
 
 
 // parse application/x-www-form-urlencoded
@@ -21,18 +21,6 @@ app.get("/", (req, res) => {
 
 app.use(cors());
 
-// get all top 5 users
-app.get("/users", (req,res)=>{
-      User.getAll((err, data) => {
-            if (err)
-              res.status(500).send({
-                message:
-                  err.message || "Some error occurred while retrieving customers."
-              });
-            else res.send(data);
-          });
-
-});
 
 // insert new users
 app.post("/user", (req,res)=>{
@@ -42,7 +30,7 @@ app.post("/user", (req,res)=>{
               message: "Content can not be empty!"
             });
           }
-        console.log("====================== body post request: ", req.body)
+        console.log("========================================= body post request: ", req.body)
           // Create a Customer
           const user = new User({
             name: req.body.name,
@@ -54,7 +42,7 @@ app.post("/user", (req,res)=>{
             if (err)
               res.status(500).send({
                 message:
-                  err.message || "line 23,controller.js, Some error occurred while creating the Customer."
+                  err.message || "line 23, controller.js, Some error occurred while creating the Customer."
               });
             else res.send(data);
           });
@@ -62,7 +50,24 @@ app.post("/user", (req,res)=>{
 
 });
 
+
+// get all top 5 users
+app.get("/users", (req,res)=>{
+  User.getAll((err, data) => {
+        if (err)
+          res.status(500).send({
+            message:
+              err.message || "Some error occurred while retrieving customers."
+          });
+        else res.send(data);
+      });
+
+});
+
+
+const PORT = process.env.PORT || 3000;
+
 // set port, listen for requests
-app.listen(3000, () => {
+app.listen(PORT, () => {
   console.log("ATTENTION !!!! Line 21 !! Server is running on port 3000.");
 });

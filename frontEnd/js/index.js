@@ -31,7 +31,7 @@ for(let j = 1;j<=lengthMatrix;j++){
       }
       // filter -> unique element
       RandomArray =_.uniq(RandomArray);
-      console.log("random Array first",RandomArray)
+
 }
 
 
@@ -48,7 +48,8 @@ function createOneSquare  (id) {
             // score + 1
             score+= 1
             document.getElementById("score").textContent =score
-
+// play sound for correct
+            playAudio("audio-correct")
             // show color user -> right
             document.getElementById(id).style.background = "#085b8d";
             //  + 1 score
@@ -74,6 +75,7 @@ function createOneSquare  (id) {
         }
 
         score-= 1
+        playAudio("audio-incorrect")
         console.log("score: ",score)
         document.getElementById(id).style.background = "red";
         document.getElementById("score").textContent =score
@@ -89,7 +91,7 @@ function createOneSquare  (id) {
   }
 // change color to hide user
 function changeColorOneSquare (id,color){
-          console.log("hide square : ", id)
+
           let oneSquare =  document.getElementById(id)
           oneSquare.style.background = color;
           oneSquare.style.transition = "all 1s"
@@ -99,15 +101,15 @@ function changeColorOneSquare (id,color){
 //  hide green color
 // show green color
   function show () {
-
+    playAudio("audio-correct")
     RandomArray.map(id => {
       // show answer for user
-      console.log("square answer color with turn on: ", id)
+
       return changeColorOneSquare(id,"#085b8d")})
       // after 3 seconds -> hide
       setTimeout(hide,2000);
       setTimeout(rotate,2000);
-      console.log("show() called -> rotate() + hide() called")
+
   }
 
   // create matrix -> 49 square
@@ -119,7 +121,7 @@ function changeColorOneSquare (id,color){
       for(let i = 1;i<=Math.pow(length, 2);i++){
         createOneSquare(i)
       }
-      console.log(`Matrix is created in ${Math.pow(length, 2)} squares `)
+
 
   }
 
@@ -129,7 +131,7 @@ function changeColorOneSquare (id,color){
         changeColorOneSquare(i,"#33FFBE")
     }
 
-    console.log("hide() trigger")
+
   }
   // need Rotate
   function rotate (){
@@ -149,7 +151,7 @@ function changeColorOneSquare (id,color){
       // show modal -> user cannot play any more
       resetScore()
       $('#scoreModal').modal("show")
-      console.log("modal show")
+
 
     }
   }
@@ -157,7 +159,7 @@ function changeColorOneSquare (id,color){
   // var terminal
   function terminalButtonClicked(){
     $('#terminateModal').modal("show")
-    console.log("modal show")
+
 
       }
 
@@ -166,13 +168,13 @@ function changeColorOneSquare (id,color){
   function resetScore(){
     score = 0
     document.getElementById("score").textContent = score
-    console.log("resetScore() trigger")
+
   }
 
   // exit modal
   function exitModal(id){
     $(`#${id}`).modal("hide")
-    console.log("exit modal trigger")
+
     //resetScore()
     terminateGame()
   }
@@ -184,7 +186,7 @@ function changeColorOneSquare (id,color){
 
           let elem = document.getElementById(i);
           elem.remove();
-          console.log('Oliver removed square:', i);
+
         }
 
 
@@ -209,7 +211,13 @@ function changeColorOneSquare (id,color){
 
 
 function terminateGame(){
-  console.log("line 254, terminate game called()")
+
   localStorage.setItem("score", score);
   window.location.href = "./summary.html";
+}
+
+function playAudio(id) {
+  console.log("sound should play")
+  let audio = document.getElementById(id);
+  audio.play();
 }
